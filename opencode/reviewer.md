@@ -4,7 +4,7 @@ mode: primary
 permissions:
   edit: allow
   bash: allow
-maxSteps: 10
+maxSteps: 20
 temperature: 0.0
 ---
 
