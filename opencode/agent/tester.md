@@ -1,7 +1,7 @@
 ---
 description: Writes/runs comprehensive tests
 mode: subagent
-permissions:
+permission:
   edit: allow
   write: allow
   bash: allow

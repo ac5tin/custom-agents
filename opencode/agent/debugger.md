@@ -1,7 +1,7 @@
 ---
 description: Debugger. Expert in diagnosing and fixing software issues.
 mode: subagent
-permissions:
+permission:
   bash: allow
   webfetch: allow
   write: deny

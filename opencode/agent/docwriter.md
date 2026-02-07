@@ -1,8 +1,9 @@
 ---
 description: DocWriter. Expert in creating clear, structured documents in Markdown format.
-mode: primary
-permissions:
+mode: subagent
+permission:
   write: allow
+  edit: allow
   bash: allow
   webfetch: allow
 temperature: 0.2
