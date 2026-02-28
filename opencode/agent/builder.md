@@ -1,7 +1,7 @@
 ---
 description: Build-phase implementation expert. Handles all code changes including new features, refactoring, bug fixes after planning..
 mode: subagent
-model: opencode/minimax-m2.5-free
+model: bailian-coding-plan/MiniMax-M2.5
 temperature: 0.2
 permission:
   edit: allow
