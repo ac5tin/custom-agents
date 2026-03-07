@@ -1,7 +1,7 @@
 ---
 description: Read-only elite consultant for complex code reviews, impl-plan reviews, architecture assistance, advanced debugging & high-reasoning tasks.
 mode: subagent
-model: github-copilot/claude-sonnet-4.6
+model: github-copilot/claude-opus-4.6
 temperature: 0.1
 max_steps: 20
 permission:
