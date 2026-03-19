@@ -1,7 +1,7 @@
 ---
 description: Strategic technical advisor. Use for architecture decisions, complex debugging, code review, and engineering guidance.
 mode: subagent
-model: zai-coding-plan/glm-5
+model: github-copilot/claude-opus-4.6
 temperature: 0.1
 max_steps: 20
 permission:

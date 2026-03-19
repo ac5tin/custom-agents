@@ -1,7 +1,7 @@
 ---
 description: Build-phase implementation expert. Handles all code changes including new features, refactoring, bug fixes after planning..
 mode: subagent
-model: bailian-coding-plan/MiniMax-M2.5
+model: github-copilot/gpt-5.4
 temperature: 0.2
 permission:
   edit: allow
