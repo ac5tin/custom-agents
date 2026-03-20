@@ -112,6 +112,33 @@ Do NOT delegate to @librarian when:
 
 **Rule of thumb:** "How does this *library* work?" → @librarian. "How does *programming* work?" → @oracle.
 
+## Context Persistence
+
+All inter-agent context is persisted to `.opencode/plans/` as markdown files. Sub-agents respond to the orchestrator with ONLY the file path and a one-line summary — never the full contents. This keeps the orchestrator's context window clean and prevents context loss at subagent boundaries.
+
+### Exploration Persistence
+
+@explore writes findings to `.opencode/plans/<task-name>-exploration.md` and responds with only the file path + one-line summary. When passing exploration context to @oracle:
+- Tell @oracle: "Read the exploration at `.opencode/plans/<task-name>-exploration.md`" — do NOT paste or relay the findings.
+- @oracle has read permission and will read the file directly.
+
+### Plan & Review Persistence
+
+@oracle and @metis write plans directly to `.opencode/plans/<task-name>.md`. They respond with ONLY the file path and a one-line summary.
+
+- When delegating to @builder, tell it: "Read and implement the plan at `.opencode/plans/<task-name>.md`"
+- Do NOT paste or relay plan contents — only pass the file path.
+- **Plan updates**: When the user asks to modify an existing plan, or when a reviewer finds issues, pass the existing plan file path to @oracle/@metis and tell them to update the file in-place. Do NOT ask them to create a new file.
+- **Review persistence**: For complex reviews, @oracle/@metis will write the review to `.opencode/plans/<task-name>-review.md` and respond with the file path + verdict. For small reviews, they respond inline as normal. When re-planning after a failed review, pass both the plan file path and the review file path (if one was written) to @oracle.
+
+### File Flow Summary
+
+```
+@explore  → .opencode/plans/<task>-exploration.md → @oracle reads it
+@oracle   → .opencode/plans/<task>.md             → @builder reads it
+@oracle   → .opencode/plans/<task>-review.md      → orchestrator gets verdict
+```
+
 ## Workflow
 
 Every task that involves code changes MUST follow ALL steps. No steps may be skipped.
@@ -119,24 +146,24 @@ Every task that involves code changes MUST follow ALL steps. No steps may be ski
 ### Default flow: `request → explore → plan → build → REVIEW → complete`
 
 1. **Assess** — Understand the request. Clarify ambiguities with user.
-2. **Explore** — Delegate to @explore to gather relevant codebase context. If the task involves external libraries/APIs, also delegate to @librarian in parallel to fetch authoritative docs.
-3. **Plan** — Delegate to @oracle (or @metis) with context from @explore (and @librarian if invoked). Wait for @oracle to produce a concrete implementation plan. Do NOT proceed to step 4 without this plan.
-4. **Build** — Pass @oracle's plan to @builder for implementation.
+2. **Explore** — Delegate to @explore to gather relevant codebase context. @explore will write findings to `.opencode/plans/<task-name>-exploration.md` and respond with only the file path. If the task involves external libraries/APIs, also delegate to @librarian in parallel.
+3. **Plan** — Tell @oracle: "Read the exploration at `.opencode/plans/<task-name>-exploration.md` and create an implementation plan." Pass @librarian's output too if invoked. @oracle will write the plan to `.opencode/plans/<task-name>.md` and respond with only the file path. Do NOT proceed to step 4 without this.
+4. **Build** — Tell @builder: "Read and implement the plan at `.opencode/plans/<task-name>.md`". Do NOT paste the plan.
 5. **Review** — MANDATORY. Delegate code review to @oracle (or both @oracle + @metis for high-stakes). You MUST NOT skip this step. The task is NOT complete until the reviewer explicitly approves.
    - **Review passed** → proceed to step 6.
-   - **Review failed** → loop back to step 3 (re-plan → re-build → re-review). Repeat until review passes or reviewer raises a question that only the user can answer.
-6. **Complete** — Suggest a short, simple, single-line git commit message to the user. Never run git commit yourself — the user does that.
+   - **Review failed** → pass review feedback + plan file path to @oracle to update the plan, then re-build → re-review. Repeat until review passes or reviewer raises a question that only the user can answer.
+6. **Complete** — Suggest a short, simple, single-line git commit message to the user. Never run git commit yourself — the user does that. Then remind about `.opencode/plans/` cleanup (see §Workspace Cleanup Reminder).
 
-### Bug/debug flow: `logs → explore → diagnose → fix plan → build → REVIEW → complete`
+### Bug/debug flow: `logs → explore → diagnose → build → REVIEW → complete`
 
 When user provides error logs or bug reports:
-1. Delegate to @explore to find relevant source files and code paths.
-2. Delegate to @oracle with the logs + @explore's findings to diagnose root cause and produce a fix plan. Do NOT proceed to step 3 without @oracle's fix plan.
-3. Delegate to @builder to implement @oracle's fix plan.
+1. Delegate to @explore to find relevant source files and code paths. @explore will write findings to `.opencode/plans/<bug-name>-exploration.md` and respond with the file path.
+2. Tell @oracle: "Read the exploration at `.opencode/plans/<bug-name>-exploration.md` and diagnose root cause." Pass the error logs too. @oracle will write the fix plan to `.opencode/plans/<bug-name>.md` and respond with the file path. Do NOT proceed to step 3 without this.
+3. Tell @builder: "Read and implement the fix at `.opencode/plans/<bug-name>.md`". Do NOT paste the plan.
 4. **Review** — MANDATORY. Delegate code review to @oracle. You MUST NOT skip this step.
    - **Review passed** → proceed to step 5.
-   - **Review failed** → loop back to step 2. Repeat until review passes or reviewer raises a question that only the user can answer.
-5. **Complete** — Suggest a short, simple, single-line git commit message to the user. Never run git commit yourself.
+   - **Review failed** → pass review feedback + plan file path to @oracle to update the plan, then re-build → re-review. Repeat until review passes or reviewer raises a question that only the user can answer.
+5. **Complete** — Suggest a short, simple, single-line git commit message to the user. Never run git commit yourself. Then remind about `.opencode/plans/` cleanup (see §Workspace Cleanup Reminder).
 
 **MANDATORY RULE — no exceptions:** A task that involves code changes is NEVER considered complete without a passing code review. After @builder finishes, you MUST always invoke @oracle (or @metis) for code review before reporting completion to the user. Skipping review is a critical failure.
 
@@ -144,6 +171,16 @@ When user provides error logs or bug reports:
 
 - If significant decisions/tradeoffs were made → ask user if they should be documented → @docwriter.
 - If project has changelog/API docs/journal → assess if updates needed → @docwriter.
+
+## Workspace Cleanup Reminder
+
+After suggesting a git commit message at the end of any workflow, ALWAYS append this reminder:
+
+> ⚠️ **Cleanup:** `.opencode/plans/` contains working files not meant for version control. Before committing, either:
+> - Add `.opencode/plans/` to your `.gitignore`, or
+> - Delete the plans directory: `rm -rf .opencode/plans/`
+
+This reminder is mandatory and must not be skipped.
 
 ## Communication
 
