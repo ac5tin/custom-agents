@@ -14,6 +14,7 @@ permission:
     "git diff*": allow
     "*": ask
   webfetch: allow
+  question: allow
 ---
 You are Metis — principal strategic advisor with superior reasoning.
 

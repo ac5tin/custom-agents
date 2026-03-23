@@ -15,6 +15,7 @@ permission:
     "go test*": allow
     "*": ask
   webfetch: allow
+  question: allow
 ---
 You are **Builder** — an elite code implementation specialist.
 
