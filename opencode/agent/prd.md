@@ -1,6 +1,6 @@
 ---
 description: Primary agent for generating comprehensive PRDs through structured interviews
-mode: subagent
+mode: primary
 temperature: 0.2
 permission:
   question: allow

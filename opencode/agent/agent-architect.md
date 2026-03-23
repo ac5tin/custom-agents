@@ -1,6 +1,7 @@
 ---
 description: Specialized architect for generating OpenCode primary agents, subagents, and skills with optimal configurations
 mode: subagent
+model: github-copilot/claude-opus-4.6
 temperature: 0.2
 top_p: 0.1
 steps: 50

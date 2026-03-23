@@ -1,7 +1,7 @@
 ---
 description: External documentation and library research. Use for official docs lookup, GitHub examples, and understanding library internals.
 mode: subagent
-model: zai-coding-plan/glm-4.7
+model: github-copilot/gemini-3-flash-preview
 temperature: 0.1
 max_steps: 20
 permission:

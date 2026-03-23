@@ -1,6 +1,7 @@
 ---
 description: DocWriter. Expert in creating clear, structured documents in Markdown format.
 mode: subagent
+model: github-copilot/gemini-3.1-pro-preview
 permission:
   write: allow
   edit: allow
