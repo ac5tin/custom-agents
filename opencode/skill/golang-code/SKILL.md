@@ -59,6 +59,63 @@ if errors.Is(err, ErrResourceNotFound) {
 }
 ```
 
+## Naming Conventions
+
+#### Identifiers
+
+- Use `camelCase` for unexported identifiers, `PascalCase` for exported identifiers. Never use `snake_case`, `SCREAMING_SNAKE_CASE`, or `ALLUPPERCASE`.
+- Acronyms/initialisms (API, URL, HTTP, ID) must use consistent case: `apiKey` or `APIKey`, never `ApiKey`. Write `userID` not `userId`.
+- Stick to ASCII letters. Use `pi` not `π`, `naiveBayes` not `naïveBayes`.
+- Don't shadow builtin types (`int`, `bool`, `any`) or builtin functions (`min`, `max`, `len`, `clear`).
+- Don't include the type in the name: use `count` not `intCount`, `results` not `resultSlice`. Exception: type-conversion disambiguation like `userIDStr := strconv.Itoa(userID)`.
+- Avoid clashing with stdlib package names you're importing (e.g., don't name a variable `url` if importing `net/url`).
+
+#### Identifier Length
+
+- Scope drives length: short-lived, narrow-scope variables (loop iterators, short functions) can use short/single-letter names (`p`, `i`). Wider scope or farther usage demands more descriptive names (`count`, `sum`, `peopleCount`).
+
+#### Packages
+
+- Use lowercase ASCII letters and numbers only. No `camelCase`, no underscores: `ordermanager` not `order_manager`.
+- Keep names short, ideally one word nouns (`orders`, `customer`, `slug`). Abbreviations are OK for long names (`strconv`, `expvar`).
+- Avoid catch-all names like `common`, `util`, `helpers`, `types`, `interfaces` — they encourage large blast-radius packages. Break them into focused packages with clear names.
+- Don't reuse stdlib package names or Go special directory names (`internal`, `vendor`, `testdata`).
+
+#### Files
+
+- Filenames should be lowercase, ideally one word (`cookie.go`, `server.go`). For multi-word names, either concatenate (`routingindex.go`) or use underscores (`routing_index.go`) — pick one and stay consistent. Reserve underscores for special suffixes (`_test.go`, `_linux.go`).
+
+#### Avoiding Chatter
+
+- Don't repeat the package name in exported identifiers: `customer.New()` not `customer.NewCustomer()`, `customer.Address` not `customer.CustomerAddress`.
+- Same for methods: on a `Token` type, use `Validate()` not `ValidateToken()`, `IsExpired()` not `IsTokenExpired()`.
+- Exception: it's acceptable when the exported type shares the package name (e.g., `time.Time`, `context.Context`).
+
+#### Method Receivers
+
+- Use short names (1–3 chars), typically an abbreviation of the type: `o` for `Order`, `hs` for `HighScore`.
+- Never use `self`, `this`, or `me`.
+- Be consistent: all methods on the same type must use the same receiver name.
+
+#### Getters and Setters
+
+- Avoid getters/setters unless exposing unexported fields. Prefix setters with `Set` but do NOT prefix getters with `Get`:
+
+```go
+func (c *Customer) Address() string       { return c.address }
+func (c *Customer) SetAddress(addr string) { c.address = addr }
+```
+
+#### Interfaces
+
+- Single-method interfaces should be named with the method name plus `-er` suffix: `Reader`, `Writer`, `Authorizer`, `Authenticator`.
+- Don't suffix interface names with `Interface`: use `Authorizer` not `AuthorizerInterface`.
+
+#### Export Discipline
+
+- Default to unexported identifiers. Only export when code outside the package needs access.
+- In `main` packages, nearly everything should be unexported (exception: struct fields needed by reflection-based packages like `encoding/json`).
+
 ## Anti-Patterns
 
 - global variables are anti-patterns and should be avoided. They can lead to unexpected side effects and make code harder to test and maintain. Instead, use dependency injection or other design patterns to manage state and dependencies in a more controlled manner.

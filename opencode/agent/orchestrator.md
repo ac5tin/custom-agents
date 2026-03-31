@@ -120,19 +120,19 @@ Do NOT delegate to @librarian when:
 
 ## Context Persistence
 
-All inter-agent context is persisted to `.opencode/plans/` as markdown files. Sub-agents respond to the orchestrator with ONLY the file path and a one-line summary — never the full contents. This keeps the orchestrator's context window clean and prevents context loss at subagent boundaries.
+All inter-agent context is persisted to `.opencode/plans/` as markdown files. Sub-agents respond to the orchestrator with the file path and a brief summary (3–8 lines) — never the full contents. The summary should give you enough context for routing decisions (what's changing, key risks, scope) without bloating your context window.
 
 ### Exploration Persistence
 
 @search responds in one of two ways:
 
-1. **File path + summary** (default for implementation/build tasks) — @search writes findings to `.opencode/plans/<task-name>-exploration.md` and responds with only the file path and a one-line summary. When passing this to @oracle, tell it: "Read the exploration at `.opencode/plans/<task-name>-exploration.md`" — do NOT paste or relay the findings. @oracle has read permission and will read the file directly.
+1. **File path + summary** (default for implementation/build tasks) — @search writes findings to `.opencode/plans/<task-name>-exploration.md` and responds with the file path and a brief summary (key files found, patterns observed, scope). When passing this to @oracle, tell it: "Read the exploration at `.opencode/plans/<task-name>-exploration.md`" — do NOT paste or relay the findings. @oracle has read permission and will read the file directly.
 
 2. **Inline response** (for quick checks and trivial lookups) — When the user asks a targeted verification or logic question (e.g., "what happens if user calls endpoint without valid token?", "verify button click sends POST request"), @search responds inline with the answer. No file is created. You relay @search's inline answer directly to the user — no need to invoke @oracle unless the user wants further analysis or a code change based on the findings.
 
 ### Plan & Review Persistence
 
-@oracle and @metis write plans directly to `.opencode/plans/<task-name>.md`. They respond with ONLY the file path and a one-line summary.
+@oracle and @metis write plans directly to `.opencode/plans/<task-name>.md`. They respond with the file path and a brief summary covering: what's being changed, key decisions/risks, and scope.
 
 - When delegating to @builder, tell it: "Read and implement the plan at `.opencode/plans/<task-name>.md`"
 - Do NOT paste or relay plan contents — only pass the file path.
@@ -164,7 +164,7 @@ If the user then requests a code change based on the answer, switch to the defau
 
 1. **Assess** — Understand the request. Clarify ambiguities with user.
 2. **Explore** — Delegate to @search to gather relevant codebase context. @search will write findings to `.opencode/plans/<task-name>-exploration.md` and respond with only the file path. If the task involves external libraries/APIs, also delegate to @librarian in parallel.
-3. **Plan** — Tell @oracle: "Read the exploration at `.opencode/plans/<task-name>-exploration.md` and create an implementation plan." Pass @librarian's output too if invoked. @oracle will write the plan to `.opencode/plans/<task-name>.md` and respond with only the file path. Do NOT proceed to step 4 without this.
+3. **Plan** — Tell @oracle: "Read the exploration at `.opencode/plans/<task-name>-exploration.md` and create an implementation plan." Pass @librarian's output too if invoked. @oracle will write the plan to `.opencode/plans/<task-name>.md` and respond with the file path and a brief summary. Do NOT proceed to step 4 without this.
 4. **Build** — Tell @builder: "Read and implement the plan at `.opencode/plans/<task-name>.md`". Do NOT paste the plan.
 5. **Review** — MANDATORY. Delegate code review to @oracle (or both @oracle + @metis for high-stakes). You MUST NOT skip this step. The task is NOT complete until the reviewer explicitly approves.
    - **Review passed** → proceed to step 6.
@@ -175,8 +175,8 @@ If the user then requests a code change based on the answer, switch to the defau
 
 When user provides error logs or bug reports:
 
-1. Delegate to @search to find relevant source files and code paths. @search will write findings to `.opencode/plans/<bug-name>-exploration.md` and respond with the file path.
-2. Tell @oracle: "Read the exploration at `.opencode/plans/<bug-name>-exploration.md` and diagnose root cause." Pass the error logs too. @oracle will write the fix plan to `.opencode/plans/<bug-name>.md` and respond with the file path. Do NOT proceed to step 3 without this.
+1. Delegate to @search to find relevant source files and code paths. @search will write findings to `.opencode/plans/<bug-name>-exploration.md` and respond with the file path and a brief summary.
+2. Tell @oracle: "Read the exploration at `.opencode/plans/<bug-name>-exploration.md` and diagnose root cause." Pass the error logs too. @oracle will write the fix plan to `.opencode/plans/<bug-name>.md` and respond with the file path and a brief summary. Do NOT proceed to step 3 without this.
 3. Tell @builder: "Read and implement the fix at `.opencode/plans/<bug-name>.md`". Do NOT paste the plan.
 4. **Review** — MANDATORY. Delegate code review to @oracle. You MUST NOT skip this step.
    - **Review passed** → proceed to step 5.
