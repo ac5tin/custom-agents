@@ -1,7 +1,7 @@
 ---
 description: External documentation and library research. Use for official docs lookup, GitHub examples, and understanding library internals.
 mode: subagent
-model: github-copilot/gemini-3-flash-preview
+model: github-copilot/claude-sonnet-4.6
 temperature: 0.1
 max_steps: 20
 permission:
