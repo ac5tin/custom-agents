@@ -4,6 +4,7 @@ mode: subagent
 model: github-copilot/gpt-5.4
 reasoningEffort: xhigh
 reasoning_effort: xhigh
+variant: xhigh
 options:
   reasoningEffort: xhigh
 temperature: 0.1
