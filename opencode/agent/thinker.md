@@ -1,5 +1,5 @@
 ---
-description: Deep-reasoning advisor for complex tasks, architecture, debugging, code reviews, engineering guidance, risk analysis, and high-stakes decisions. Use before implementation when judgment matters.
+description: Deep-reasoning advisor for complex tasks, Use for architecture decisions, debugging, code reviews, engineering guidance, risk analysis, and high-stakes decisions. Use before implementation when judgment matters.
 mode: subagent
 model: zai-coding-plan/glm-5.1
 reasoningEffort: high
