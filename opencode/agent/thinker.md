@@ -1,5 +1,5 @@
 ---
-description: Read-only reasoning, review, and decision-support subagent. Use for code/PR/diff reviews, plan validation, implementation planning, architecture decisions, debugging diagnosis, risk analysis, and high-stakes technical judgment.
+description: Read-only reasoning, review, and decision-support subagent. Use for code/PR/diff reviews, plan validation, technical consultation, implementation planning, architecture decisions, debugging diagnosis, risk analysis, and high-stakes technical judgment.
 mode: subagent
 temperature: 0.1
 max_steps: 30
@@ -83,6 +83,7 @@ Brief conclusion or recommendation.
 </rationale>
 
 <handoff_plan>
+
 1. Concrete implementation or investigation step
 2. Concrete implementation or investigation step
 3. Verification step
