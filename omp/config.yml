@@ -1,0 +1,18 @@
+modelRoles: 
+  default: zai/glm-5.2:max
+  smol: opencode-go/deepseek-v4-flash:high
+  slow: zai/glm-5.2:max
+  plan: zai/glm-5.2:max
+  advisor: zai/glm-5.2:max
+symbolPreset: unicode
+theme: 
+  dark: titanium
+setupVersion: 1
+defaultThinkingLevel: max
+advisor: 
+  enabled: true
+  subagents: false
+memory: 
+  backend: "off"
+plan: 
+  defaultOnStartup: true
