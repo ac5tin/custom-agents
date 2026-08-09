@@ -1,9 +1,14 @@
 modelRoles: 
   default: zai/glm-5.2:max
   smol: opencode-go/deepseek-v4-flash:high
-  slow: zai/glm-5.2:max
-  plan: zai/glm-5.2:max
-  advisor: zai/glm-5.2:max
+  slow: opencode-go/kimi-k3:max
+  plan: alibaba-token-plan/qwen3.8-max
+  advisor: xai-oauth/grok-4.5:high
+  tiny: xai-oauth/grok-4.5:minimal
+  task: opencode-go/deepseek-v4-flash:max
+  vision: xai-oauth/grok-4.5:medium
+  commit: xai-oauth/grok-4.5:minimal
+  designer: xai-oauth/grok-4.5:high
 symbolPreset: unicode
 theme: 
   dark: titanium
@@ -16,3 +21,10 @@ memory:
   backend: "off"
 plan: 
   defaultOnStartup: true
+cycleOrder: 
+  - smol
+  - default
+  - slow
+task: 
+  eager: preferred
+  enableEffort: true
