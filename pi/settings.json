@@ -1,0 +1,28 @@
+{
+  "lastChangelogVersion": "0.84.4",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "muse-spark-1.2-contributor",
+  "defaultThinkingLevel": "xhigh",
+  "theme": "dark",
+  "packages": [
+    "npm:pi-mcp-adapter",
+    "npm:pi-lens",
+    "npm:pi-web-access",
+    "npm:@plannotator/pi-extension",
+    "npm:pi-powerline-footer",
+    "npm:@ac5tin/pi-subagents-lite",
+    "npm:context-mode",
+    "npm:@juicesharp/rpiv-todo",
+    "git:github.com/obra/superpowers",
+    "git:github.com/DietrichGebert/ponytail"
+  ],
+  "enabledModels": [
+    "opencode-go/muse-spark-1.2-contributor",
+    "opencode-go/gpt-5.6-luna",
+    "xai/grok-4.6",
+    "zai/glm-5.3",
+    "zai/glm-5.3-flash",
+    "qwen-token-plan-individual/deepseek-v4-flash-0731",
+    "qwen-token-plan-individual/deepseek-v4-pro-0813"
+  ]
+}
