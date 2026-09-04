@@ -1,8 +1,13 @@
 {
   "agent": {
     "general-purpose": "opencode-go/gpt-5.6-luna",
-    "Explore": "opencode-go/muse-spark-1.2-contributor",
+    "Explore": "opencode-go/muse-spark-1.3-contributor",
+    "Advisor": "xai/grok-4.6",
     "thinking:general-purpose": "high",
-    "thinking:Explore": "xhigh"
+    "thinking:Explore": "xhigh",
+    "Advisor:Explore": "medium",
+    "thinking:Advisor": "high",
+    "Reviewer": "xai/grok-4.6",
+    "thinking:Reviewer": "high"
   }
 }
